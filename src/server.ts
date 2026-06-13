@@ -4,17 +4,18 @@ import express, {
   type Response,
 } from "express";
 import { Pool } from "pg";
+import config from "./config";
 
 
 const app: Application = express();
-const port = process.env.PORT || 3000;
+const port = config.port || 3000;
 
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
 
 const pool = new Pool({
-  connectionString: "postgresql://neondb_owner:npg_i6oB1GDxZEAa@ep-solitary-flower-ajfyk6l4-pooler.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+  connectionString: config.connectionString,
 });
 
 // Root Route
@@ -186,7 +187,7 @@ app.put("/api/users/:id", async (req: Request, res: Response) => {
   }
 });
 
-// Delete User
+//
 app.delete("/api/users/:id", async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
