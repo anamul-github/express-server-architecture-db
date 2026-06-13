@@ -14,7 +14,7 @@ app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: "postgresql://neondb_owner:npg_i6oB1GDxZEAa@ep-solitary-flower-ajfyk6l4-pooler.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
 });
 
 // Root Route
@@ -136,6 +136,52 @@ app.get("/api/users/:id", async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "Failed to retrieve user",
+    });
+  }
+});
+
+// Update User
+app.put("/api/users/:id", async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    const { name, password, age, is_active } = req.body;
+
+    if (Number.isNaN(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID",
+      });
+    }
+
+    const result = await pool.query(
+      `UPDATE users 
+      SET 
+      name = COALESCE($1, name), 
+      password = COALESCE($2, password), 
+      age = COALESCE($3, age), 
+      is_active = COALESCE($4, is_active) 
+      WHERE id = $5 RETURNING *`,
+      [name, password, age, is_active, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    console.error("Error updating user:", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to update user",
     });
   }
 });
