@@ -3,7 +3,7 @@ import express, {
   type Request,
   type Response,
 } from "express";
-import { pool } from ".";
+import { pool } from "./db";
 
 
 const app: Application = express();
