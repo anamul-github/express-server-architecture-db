@@ -1,15 +1,21 @@
 import { pool } from "../../db";
 import type { IUSER } from "./user.interface";
+import bcrypt from "bcryptjs";
 
 const createUserIntoDB = async (payload:IUSER) => {
     const { name, email, password, age } = payload;
+
+    const hashPassword = await bcrypt.hash(password, 10);
 
     const result = await pool.query(
       `INSERT INTO users (name, email, password, age)
        VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [name, email, password, age]
+      [name, email, hashPassword, age]
     );
+      
+    delete result.rows[0].password;
+
     return result.rows[0];
 };
 
@@ -35,7 +41,7 @@ const updateUserIntoDB = async (id: string, payload: IUSER) => {
      is_active = COALESCE($4, is_active),
      updated_at = NOW()
    WHERE id = $5
-   RETURNING *`,
+   RETURNING name,emai,age,created_at,updated_at`,
   [name, password, age, is_active, id]
 );
     return result;
