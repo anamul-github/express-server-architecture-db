@@ -1,8 +1,8 @@
 # Express.js Server Architecture & Database Integration
 
-This repository contains my hands-on practice for Express.js server architecture, REST API development, PostgreSQL database integration, and backend configuration using TypeScript.
+This repository contains my hands-on practice for Express.js server architecture, REST API development, PostgreSQL database integration, modular backend structure, and user authentication using TypeScript.
 
-This project is part of my backend development practice where I am re-practicing important Express.js concepts in detail.
+This project is part of my backend development practice where I am re-practicing important Express.js concepts in detail with a more organized and scalable structure.
 
 ## What I Practiced
 
@@ -15,9 +15,9 @@ This project is part of my backend development practice where I am re-practicing
   * `express.urlencoded()`
 * Setting up PostgreSQL with Neon Serverless Cloud
 * Connecting Express.js with PostgreSQL using `pg` Pool
-* Creating a database table from the backend
+* Creating database tables from the backend
 * Exploring SQL data types
-* Writing SQL queries inside API routes
+* Writing SQL queries inside service layers
 * Creating REST API endpoints
 * Testing APIs with Postman
 * Handling route parameters
@@ -26,6 +26,15 @@ This project is part of my backend development practice where I am re-practicing
 * Using parameterized SQL queries
 * Setting up environment-based configuration using `.env` and `dotenv`
 * Separating port and database connection configuration into a config file
+* Refactoring the project into a modular backend structure
+* Separating route, controller, and service responsibilities
+* Creating user profile APIs
+* Managing user profile data with SQL references
+* Understanding authentication and authorization
+* Hashing passwords with bcrypt
+* Comparing hashed passwords during login
+* Creating JWT tokens for authentication
+* Organizing authentication logic into a separate module
 
 ## Technologies Used
 
@@ -36,8 +45,43 @@ This project is part of my backend development practice where I am re-practicing
 * Neon Serverless Cloud
 * pg
 * dotenv
+* bcrypt
+* jsonwebtoken
 * Postman
 * TSX
+
+## Project Structure
+
+```bash
+express-js/
+├── src/
+│   ├── config/
+│   │   └── index.ts
+│   ├── db/
+│   │   └── index.ts
+│   ├── modules/
+│   │   ├── auth/
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.route.ts
+│   │   │   └── auth.service.ts
+│   │   ├── profile/
+│   │   │   ├── profile.controller.ts
+│   │   │   ├── profile.route.ts
+│   │   │   └── profile.service.ts
+│   │   └── user/
+│   │       ├── user.controller.ts
+│   │       ├── user.interface.ts
+│   │       ├── user.route.ts
+│   │       └── user.service.ts
+│   ├── app.ts
+│   └── server.ts
+├── .env
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── README.md
+└── tsconfig.json
+```
 
 ## API Endpoints
 
@@ -48,6 +92,10 @@ GET /
 ```
 
 Returns a basic server response.
+
+---
+
+## User Routes
 
 ### Create User
 
@@ -103,8 +151,6 @@ Example request body:
 }
 ```
 
-This update uses SQL `COALESCE`, so only the provided fields are updated.
-
 ### Delete User
 
 ```http
@@ -113,36 +159,49 @@ DELETE /api/users/:id
 
 Deletes a user by ID.
 
-## Database Table
+---
 
-The project creates a `users` table if it does not already exist.
+## Profile Routes
 
-```sql
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100),
-  email VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(100) NOT NULL,
-  is_active BOOLEAN DEFAULT TRUE,
-  age INTEGER,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
+### Create Profile
+
+```http
+POST /api/profiles
 ```
 
-## Project Structure
+Creates a profile for a user.
 
-```bash
-express-js/
-├── src/
-│   ├── config/
-│   │   └── index.ts
-│   └── server.ts
-├── .env
-├── .gitignore
-├── package.json
-├── package-lock.json
-└── tsconfig.json
+Example request body:
+
+```json
+{
+  "user_id": 1,
+  "bio": "This is my profile",
+  "address": "Dhaka",
+  "phone": "123456",
+  "gender": "Male"
+}
+```
+
+---
+
+## Auth Routes
+
+### Login User
+
+```http
+POST /api/auth/login
+```
+
+Authenticates a user and returns a JWT token.
+
+Example request body:
+
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
 ```
 
 ## How to Run This Project
@@ -167,6 +226,6 @@ http://localhost:3000
 
 ## Learning Summary
 
-In this project, I practiced how an Express.js backend works with a real PostgreSQL database. I implemented basic CRUD operations, tested endpoints using Postman, used parameterized SQL queries, and organized environment-based configuration for cleaner server setup.
+In this project, I practiced how an Express.js backend works with a real PostgreSQL database and a modular backend architecture. I implemented user CRUD operations, profile creation, authentication flow, password hashing, JWT token generation, and environment-based configuration.
 
-The main goal of this practice was to strengthen my backend foundation by understanding how Express.js, REST APIs, PostgreSQL, Neon, and server configuration work together.
+The main goal of this practice was to strengthen my backend foundation by understanding how Express.js, REST APIs, PostgreSQL, Neon, modular architecture, authentication, and server configuration work together in a real backend application.
