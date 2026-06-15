@@ -4,4 +4,5 @@
   password: string;
   age: number;
     is_active?: boolean;
+    role?: string; //admin, agent, users
 }

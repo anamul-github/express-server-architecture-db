@@ -60,3 +60,31 @@ Method -> GET - Time -> 1781490246378 - URL -> /api/users/?Authorization
 Method -> GET - Time -> 1781491673324 - URL -> /api/users/?Authorization
 
 Method -> GET - Time -> 1781491766195 - URL -> /api/users/?Authorization
+
+Method -> POST - Time -> 1781492233160 - URL -> /api/users
+
+Method -> POST - Time -> 1781492268572 - URL -> /api/users
+
+Method -> POST - Time -> 1781492443021 - URL -> /api/users
+
+Method -> POST - Time -> 1781492480467 - URL -> /api/users
+
+Method -> POST - Time -> 1781493007265 - URL -> /api/users
+
+Method -> POST - Time -> 1781493376200 - URL -> /api/users
+
+Method -> POST - Time -> 1781493393385 - URL -> /api/auth/login
+
+Method -> GET - Time -> 1781493467428 - URL -> /api/users/?Authorization
+
+Method -> POST - Time -> 1781493592777 - URL -> /api/auth/login
+
+Method -> GET - Time -> 1781493621183 - URL -> /api/users/?Authorization
+
+Method -> GET - Time -> 1781494122794 - URL -> /api/users/?Authorization
+
+Method -> POST - Time -> 1781494151353 - URL -> /api/auth/login
+
+Method -> POST - Time -> 1781494185201 - URL -> /api/auth/login
+
+Method -> GET - Time -> 1781494217053 - URL -> /api/users/?Authorization
